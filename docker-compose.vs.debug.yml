@@ -1,0 +1,14 @@
+version: '2.1'
+
+services:
+  lab_01_08:
+    image: lab_01_08:dev
+    build:
+      args:
+        source: ${DOCKER_BUILD_SOURCE}
+    volumes:
+      - .\Lab_01_08:C:\app
+      - ~\msvsmon:C:\msvsmon:ro
+    entrypoint: powershell -Command [System.Threading.Thread]::Sleep([System.Threading.Timeout]::Infinite)
+    labels:
+      - "com.microsoft.visualstudio.targetoperatingsystem=windows"
