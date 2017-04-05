@@ -13,8 +13,10 @@ namespace Lab_04_01
         // Позиция курсора (private)
         private int position = 1;
 
+        // Позиция курсора подменю (private)
         private int subPosition = 1;
 
+        // Активно ли подменю (private)
         public bool bSubMenu = false;
 
         // Свойство для возвращения позиции курсора (readonly)
@@ -23,6 +25,7 @@ namespace Lab_04_01
             get { return position; }
         }
 
+        // Свойство для возвращения позиции курсора подменю (readonly)
         public int SubPosition
         {
             get { return subPosition; }
@@ -71,38 +74,14 @@ namespace Lab_04_01
             switch (action)
             {
                 case 1:
-                    string[] array1D = (string[])data;
-                    Console.SetCursorPosition(30, 17);
-                    int b = 17;
-                    foreach (string x in array1D)
-                    {
-                        Console.SetCursorPosition(30, b++);
-                        Console.WriteLine(x);
-                    }
-                    Console.SetCursorPosition(79, 24);
                     break;
                 case 2:
-                    int[][] array2D = (int[][])data;
-                    Console.SetCursorPosition(30, 17);
-                    for (int i = 0; i < array2D.Length; i++, Console.WriteLine(), Console.Write(new string(' ', 30)))
-                        for (int j = 0; j < array2D[i].Length; j++)
-                            Console.Write("{0,3}", array2D[i][j]);
-                    Console.SetCursorPosition(79, 24);
                     break;
                 case 3:
-                    Console.SetCursorPosition(30, 18);
-                    Console.Write("Одномерный массив создан");
-                    Console.SetCursorPosition(79, 24);
                     break;
                 case 4:
-                    Console.SetCursorPosition(30, 18);
-                    Console.Write("Двумерный массив создан");
-                    Console.SetCursorPosition(79, 24);
                     break;
                 case 5:
-                    Console.SetCursorPosition(30, 18);
-                    Console.Write(" Массив записан в файл ");
-                    Console.SetCursorPosition(79, 24);
                     break;
             }
         }
@@ -147,10 +126,12 @@ namespace Lab_04_01
                 case 1:
                     Console.SetCursorPosition(23, 10);
                     Console.WriteLine("  Поиск в указанном каталоге файлов        ");
+
                     break;
                 case 2:
                     Console.SetCursorPosition(23, 11);
                     Console.WriteLine("  Замена указанного текста в файлах        ");
+
                     break;
                 case 3:
                     Console.SetCursorPosition(23, 12);
@@ -162,6 +143,7 @@ namespace Lab_04_01
                 case 4:
                     Console.SetCursorPosition(23, 13);
                     Console.WriteLine("  Выйти из приложения                      ");
+
                     break;
             }
             Console.ResetColor();
@@ -453,8 +435,6 @@ namespace Lab_04_01
                     {
                         case 1:
                             {
-                                //menu.Show(menu.Position);
-
                                 Console.SetCursorPosition(25, 17);
                                 Console.Write("Введите путь к директории:");
                                 Console.SetCursorPosition(25, 18);
@@ -507,7 +487,6 @@ namespace Lab_04_01
                             }
                         case 2:
                             {
-                                //menu.Show(menu.Position);
 
                                 Console.SetCursorPosition(30, 17);
                                 Console.Write("Введите путь к директории:");
@@ -532,7 +511,6 @@ namespace Lab_04_01
 
                                 WalkDirectoryTree(di, mask);
 
-  
                                 List<string> changedFiles = new List<string>();
 
                                 foreach (FileSystemInfo file in directories)
@@ -679,8 +657,6 @@ namespace Lab_04_01
                                 Console.Write("Результаты записаны в текстовый файл data_3.txt");
                                 Console.SetCursorPosition(79, 24);
 
-
-                                //ConsoleKeyInfo cki;
                                 do
                                 {
                                     cki = Console.ReadKey();
@@ -692,12 +668,9 @@ namespace Lab_04_01
                                         {
                                             case 1:
                                                 {
-
                                                     menu.ShowSubCustomText(30, 17, "Выполнение");
 
                                                     DeleteFilesFolders(directories);
-
-                                                    //menu.ShowSubCustomText(30, 17, "Операция завершена");
 
                                                     break;
                                                 }
@@ -711,9 +684,7 @@ namespace Lab_04_01
 
                                                     menu.ShowSubCustomText(30, 17, "Выполнение");
 
-                                                    directories = DeleteCustomFilesFolders(fileNumber, diwrectories);
-
-                                                    //menu.ShowSubCustomText(30, 17, "Операция завершена");
+                                                    directories = DeleteCustomFilesFolders(fileNumber, directories);
 
                                                     break;
                                                 }
@@ -750,7 +721,6 @@ namespace Lab_04_01
                                                     menu.bSubMenu = false;
                                                     break;
                                                 }
-
                                         }
                                     }
                                 } while (menu.IsSubMenu == true);
