@@ -56,46 +56,54 @@ namespace Lab_04_02
 
 
         // Вывод на экран результата действия
-        public void ShowAction(int action, object data)
-        {
-            switch (action)
-            {
-                case 1:
-                    string[] array1D = (string[])data;
-                    Console.SetCursorPosition(30, 17);
-                    int b = 17;
-                    foreach (string x in array1D)
-                    {
-                        Console.SetCursorPosition(30, b++);
-                        Console.WriteLine(x);
-                    }
-                    Console.SetCursorPosition(79, 24);
-                    break;
-                case 2:
-                    int[][] array2D = (int[][])data;
-                    Console.SetCursorPosition(30, 17);
-                    for (int i = 0; i < array2D.Length; i++, Console.WriteLine(), Console.Write(new string(' ', 30)))
-                        for (int j = 0; j < array2D[i].Length; j++)
-                            Console.Write("{0,3}", array2D[i][j]);
-                    Console.SetCursorPosition(79, 24);
-                    break;
-                case 3:
-                    Console.SetCursorPosition(30, 18);
-                    Console.Write("Одномерный массив создан");
-                    Console.SetCursorPosition(79, 24);
-                    break;
-                case 4:
-                    Console.SetCursorPosition(30, 18);
-                    Console.Write("Двумерный массив создан");
-                    Console.SetCursorPosition(79, 24);
-                    break;
-                case 5:
-                    Console.SetCursorPosition(30, 18);
-                    Console.Write(" Массив записан в файл ");
-                    Console.SetCursorPosition(79, 24);
-                    break;
-            }
-        }
+        //public void ShowAction(int action, object data)
+        //{
+        //    switch (action)
+        //    {
+        //        case 1:
+        //            string[] array1D = (string[])data;
+        //            Console.SetCursorPosition(30, 17);
+        //            int b = 17;
+        //            foreach (string x in array1D)
+        //            {
+        //                Console.SetCursorPosition(30, b++);
+        //                Console.WriteLine(x);
+        //            }
+        //            Console.SetCursorPosition(79, 24);
+        //            break;
+        //        case 2:
+        //            int[][] array2D = (int[][])data;
+        //            Console.SetCursorPosition(30, 17);
+        //            for (int i = 0; i < array2D.Length; i++, Console.WriteLine(), Console.Write(new string(' ', 30)))
+        //                for (int j = 0; j < array2D[i].Length; j++)
+        //                    Console.Write("{0,3}", array2D[i][j]);
+        //            Console.SetCursorPosition(79, 24);
+        //            break;
+        //        case 3:
+        //            Console.SetCursorPosition(30, 18);
+        //            Console.Write("Одномерный массив создан");
+        //            Console.SetCursorPosition(79, 24);
+        //            break;
+        //        case 4:
+        //            Console.SetCursorPosition(30, 18);
+        //            Console.Write("Двумерный массив создан");
+        //            Console.SetCursorPosition(79, 24);
+        //            break;
+        //        case 5:
+        //            Console.SetCursorPosition(30, 18);
+        //            Console.Write(" Массив записан в файл ");
+        //            Console.SetCursorPosition(79, 24);
+        //            break;
+        //    }
+        //}
+
+        //public void ShowAction(int action, object data)
+        //{
+        //    Console.SetCursorPosition(30, 18);
+        //    Console.Write(" Массив записан в файл ");
+        //    Console.SetCursorPosition(79, 24);
+        //}
+
 
         public void ShowCustomText(int leftPosition, int topPosition, string inText)
         {
@@ -382,7 +390,7 @@ namespace Lab_04_02
                 {
                     switch (menu.Position)
                     {
-                        case 1:
+                        case 0:
                             {
                                 //menu.Show(menu.Position);
 
@@ -436,7 +444,7 @@ namespace Lab_04_02
 
                                 break;
                             }
-                        case 2:
+                        case 1:
                             {
                                 //menu.Show(menu.Position);
 
@@ -530,12 +538,135 @@ namespace Lab_04_02
 
                                 break;
                             }
-                        case 3:
+                        case 2:
                             {
+                                Console.SetCursorPosition(25, 17);
+                                Console.Write("Введите имя диска:");
+                                Console.SetCursorPosition(25, 18);
+                                string driveName = Console.ReadLine();
+                                Console.SetCursorPosition(25, 19);
+                                Console.Write("Введите маску поиска:");
+                                string mask = Console.ReadLine();
+
+                                DriveInfo drInfo = new DriveInfo(driveName);
+
+                                menu.ShowCustomText(30, 17, "Выполнение...");
+
+                                WalkDirectoryTree(drInfo.RootDirectory, mask);
+
+                                Trace.WriteLine("Files with restricted access:");
+                                foreach (string s in log)
+                                {
+                                    Trace.WriteLine(s);
+                                }
+
+                                foreach (FileSystemInfo item in directories)
+                                {
+                                    if (File.Exists(item.FullName))
+                                    {
+                                        Trace.WriteLine("Файл" + item.FullName);
+                                    }
+                                    else if (Directory.Exists(item.FullName))
+                                    {
+                                        Trace.WriteLine("Директория" + item.FullName);
+                                    }
+                                }
+
+                                int countFiles = 0;
+                                int countDirs = 0;
+
+                                using (FileStream fs = new FileStream("data_3.txt", FileMode.Create))
+                                {
+                                    TextWriter tw = new StreamWriter(fs);
+
+                                    int countItems = 1;
+
+                                    foreach (FileSystemInfo item in directories)
+                                    {
+                                        if (File.Exists(item.FullName))
+                                        {
+                                            tw.WriteLine(countItems + ": Файл: " + item.FullName);
+                                            Trace.WriteLine(countItems + ": Файл: " + item.FullName);
+                                            countFiles++;
+                                            countItems++;
+                                        }
+                                        else if (Directory.Exists(item.FullName))
+                                        {
+                                            tw.WriteLine(countItems + ": Директория: " + item.FullName);
+                                            Trace.WriteLine(countItems + ": Директория: " + item.FullName);
+                                            countDirs++;
+                                            countItems++;
+                                        }
+                                    }
+
+                                    Trace.WriteLine("Общее количество директорий: " + countDirs);
+                                    Trace.WriteLine("Общее количество файлов: " + countFiles);
+
+                                    tw.WriteLine("Общее количество директорий: {0}", countDirs);
+                                    tw.WriteLine("Общее количество файлов: {0}", countFiles);
+
+                                    tw.WriteLine();
+
+                                    tw.Flush();
+                                    tw.Close();
+                                }
+
+                                List<MenuItem> subItems = new List<MenuItem>();
+
+                                subItems.Add(new MenuItem("  Удалить все найденное                    ", 10));
+                                subItems.Add(new MenuItem("  Удалить заданный файл или каталог        ", 11));
+                                subItems.Add(new MenuItem("  Удалить диапазон файлов или каталогов    ", 12));
+                                subItems.Add(new MenuItem("  Вернуться в предыдущее меню              ", 13));
+
+                                Menu subMenu = new Menu(subItems);
+
+                                subMenu.Show(0, 8);
+
+                                subMenu.ShowCustomText(25, 17, "Найдено директорий: " + countDirs + "|  файлов: " + countFiles);
+                                Console.SetCursorPosition(20, 18);
+                                Console.Write("Результаты записаны в текстовый файл data_3.txt");
+                                Console.SetCursorPosition(79, 24);
+
+
+                                bool isSubMenu = true;
+
+                                do
+                                {
+                                    cki = Console.ReadKey();
+                                    if (cki.Key == ConsoleKey.UpArrow) subMenu.UpPosition();
+                                    else if (cki.Key == ConsoleKey.DownArrow) subMenu.DownPosition();
+                                    else if (cki.Key == ConsoleKey.Enter)
+                                    {
+                                        switch (subMenu.Position)
+                                        {
+                                            case 0:
+                                                {
+                                                    break;
+                                                }
+                                            case 1:
+                                                {
+                                                    break;
+                                                }
+                                            case 2:
+                                                {
+                                                    break;
+                                                }
+
+                                            case 3:
+                                                {
+                                                    isSubMenu = false;
+                                                    break;
+                                                }
+                                        }
+                                    }
+                                } while (isSubMenu);
+
+                                menu.Show(menu.Position, 8);
+
                                 break;
                             }
 
-                        case 4:
+                        case 3:
                             Environment.Exit(0);
                             break;
                     }
