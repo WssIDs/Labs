@@ -6,7 +6,7 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Lab_04_02
+namespace Lab_04_01
 {
 
     /// <summary>
