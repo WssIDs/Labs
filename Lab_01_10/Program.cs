@@ -1,48 +1,71 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+
+/*
+    Разработать рекурсивный метод для вывода на экран всех возможных разложений натурального числа n на множители (без повторений). Например, для n = 12 на экран должно
+    быть выведено:
+
+    2*2*3=12
+    2*6=12
+    3*4=12
+    
+*/
 
 namespace Lab_01_10
 {
     class Program
     {
-        static int x;
-        static int b = 2;
 
+        /// <summary>
+        /// Массив множителей
+        /// </summary>
+        static int[] mass = new int[100];
+        static int number = 0;
 
-
-        static readonly int MaxDeep = 10000;
-        static int[] Decomposition = new int[MaxDeep];
-        static void Decompose(int multiplier, int n, int deep)
+        /// <summary>
+        /// Поиск всех делителей числа (без повторений) 
+        /// </summary>
+        /// <param name="divider">делитель</param>
+        /// <param name="n">число</param>
+        /// <param name="index">индекс</param>
+        static void FindDividers(int divider, int n, int index)
         {
-            int i, mlim = 0;
+            //если n = 1 , вывод на экран
             if (n == 1)
             {
-                for (i = 0; i < deep - 1; i++)
-                    Console.Write(Decomposition[i] + "*");
-                if (deep > 0)
-                    Console.WriteLine(Decomposition[deep - 1]);
-                return;
+                for (int i = 0; i < index - 1; i++)
+                {
+                    Console.Write(mass[i] + "*");
+                }
+
+                if (index > 0 && mass[index - 1] != number)
+                {
+                    Console.WriteLine(mass[index - 1] + "=" + number);
+                    return;
+                }
+
             }
-            if (deep == 0)
-                mlim = n - 1;
-            else
-                mlim = n;
-            for (Decomposition[deep] = multiplier; Decomposition[deep] <= mlim; Decomposition[deep]++)
-                if ((n % Decomposition[deep]) == 0)
-                    Decompose(Decomposition[deep], n / Decomposition[deep], deep + 1);
+
+            // Поиск множителей
+            for (mass[index] = divider; mass[index] <= n; mass[index]++)
+            {
+                if ((n % mass[index]) == 0)
+                {
+                    FindDividers(mass[index], n / mass[index], index + 1);
+                }
+            }
         }
 
-        static void Main(string[] args)
+        static void Main()
         {
-            int n;
-            Console.WriteLine("Разложение числа на множители");
             Console.Write("Введите число: ");
-            n = int.Parse(Console.ReadLine());
-            Decompose(2, n, 0);
 
+            int n = int.Parse(Console.ReadLine());
+            number = n;
+
+            FindDividers(2, n, 0);
 
             Console.ReadKey();
         }
+
     }
 }

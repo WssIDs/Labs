@@ -687,8 +687,6 @@ namespace Lab_04_01
 
             Menu menu = new Menu(items);
 
-
-
             menu.Show(0, 8);
             ConsoleKeyInfo cki;
             do
